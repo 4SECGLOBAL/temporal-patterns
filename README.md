@@ -1,4 +1,4 @@
-# encontrador-de-regras
+# Temporal Patterns Analyser 
 Projeto de Iniciação Científica. MAI-DAI.
 
 Para rodar o programa, basta utilizar "make all" no terminal.
