@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template, redirect, request, jsonify
-from .modelos.modelos import Modelo
+from .models.modelos import Modelo
 from .controlador import Controlador
 import pandas as pd
 import json

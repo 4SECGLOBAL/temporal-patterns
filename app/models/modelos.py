@@ -1,6 +1,6 @@
-from .dados_originais import dadosOriginais
-from .dados_modificados import dadosModificados
-from .buscador_de_regras import buscadorRegras
+from .dados_originais import originalData
+from .dados_modificados import modifiedData
+from .buscador_de_regras import ruleFinder
 import time
 
 class Modelo:
@@ -11,23 +11,23 @@ class Modelo:
         self.regras = None
 
     def set_dados_originais(self, data, metadata, origem, destino):
-        self.dados_originais = dadosOriginais(data, metadata, origem, destino)
+        self.dados_originais = originalData(data, metadata, origem, destino)
 
     def set_dados_modificados(self, data, metadata, origem, destino):
-        self.dados_modificados = dadosModificados(data, metadata, origem, destino)
+        self.dados_modificados = modifiedData(data, metadata, origem, destino)
 
 
     def set_regras_parametros(self, min_rep, min_conf, janela_tempo):
         if self.buscador_regras is None:
-            self.buscador_regras = buscadorRegras(janela_tempo, min_rep, min_conf)
+            self.buscador_regras = ruleFinder(janela_tempo, min_rep, min_conf)
         else:
             self.buscador_regras.set_infos_regras(janela_tempo, min_rep, min_conf)
 
     def buscar_regras(self):
-        self.buscador_regras.set_dataset(self.dados_modificados.get_dados_ordenados())
+        self.buscador_regras.set_dataset(self.dados_modificados.getModifiedOrderedData())
         self.buscador_regras.set_infos_dados(self.dados_modificados.metadata, self.dados_modificados.origem, self.dados_modificados.destino)
         inicio_baldes = time.time()
-        self.buscador_regras.gerar_baldes()
+        self.buscador_regras.kmeansBucketGenerator()
         final_baldes = time.time()
 
         print('Tempo para gerar baldes: ', final_baldes - inicio_baldes)
@@ -36,7 +36,7 @@ class Modelo:
         print('Numero de baldes gerados: ', numero_de_baldes)
 
         print('Gerando regras com os parametros: ', self.buscador_regras.janela_tempo, self.buscador_regras.min_rep, self.buscador_regras.min_conf)
-        self.regras = self.buscador_regras.gerar_regras()
+        self.regras = self.buscador_regras.aprioriRuleGenerator()
         return self.regras
     
     def get_itemsets(self):
@@ -122,7 +122,7 @@ class Modelo:
         return self.regras
     
     def get_dados_originais_ordenado(self):
-        return self.dados_originais.get_data_original_ordenado()
+        return self.dados_originais.getOriginalOrderedData()
     
     def get_dados_com_cluster(self):
         return self.buscador_regras.dados_com_cluster

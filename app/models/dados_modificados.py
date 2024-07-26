@@ -1,6 +1,6 @@
 import pandas as pd
 
-class dadosModificados:
+class modifiedData:
     def __init__(self, data, metadata, origem, destino):
         self.data = data
         self.metadata = metadata
@@ -17,5 +17,5 @@ class dadosModificados:
 
         self.data_ordenado = self.data.copy()
 
-    def get_dados_ordenados(self):
+    def getModifiedOrderedData(self):
         return self.data_ordenado

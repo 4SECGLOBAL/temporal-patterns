@@ -8,7 +8,7 @@ from math import sqrt, floor
 from tqdm import tqdm
 from fim import arules
 
-class buscadorRegras:
+class ruleFinder:
     def __init__(self, janela_tempo, min_rep, min_conf):
         self.dataset = None
         self.metadata = None
@@ -33,7 +33,7 @@ class buscadorRegras:
         self.min_rep = min_rep
         self.min_conf = min_conf
 
-    def gerar_baldes(self):
+    def kmeansBucketGenerator(self):
         # https://towardsdatascience.com/advanced-k-means-controlling-groups-sizes-and-selecting-features-a998df7e6745
         metadata = self.metadata
         origem = self.origem
@@ -80,10 +80,11 @@ class buscadorRegras:
         sil = []
 
         # calcular a matriz de distancias
-        distancias = np.zeros((len(X_scaled), len(X_scaled)))
-        for i in range(len(X_scaled)):
-            for j in range(len(X_scaled)):
-                distancias[i][j] = sqrt((X_scaled[i][0] - X_scaled[j][0])**2)
+        # se trata da norma L2, mas como temos um dado 1D,
+        # temos que a norma é equivalente ao valor absoluto de cada elemento 
+        # do único componente
+        Xi, Xj = np.meshgrid(X_scaled, X_scaled)
+        distancias = np.abs(Xi - Xj) 
 
         for k in tqdm(range(kmin, kmax+1), desc='Calculando melhor numero de clusters'):
             kmeans = KMeans(n_clusters=k, random_state=21).fit(X_scaled)
@@ -105,7 +106,7 @@ class buscadorRegras:
         clusters = kmeans.labels_
 
         # #adicionar a coluna de clusters ao dataframe
-        data['Cluster'] = clusters
+        data['Cluster'] = clusters # some improper data handling
         # #plot dos clusters em um grafico 2D onde y = 0
         # plt.scatter(data[metadata], np.zeros(len(data[metadata])), c=clusters, cmap='viridis')
         # plt.xlabel('Timestamp')
@@ -134,12 +135,17 @@ class buscadorRegras:
         #     print(f"Balde {i} de tamanho {len(bucket)}: {bucket}", '\n')
         #     i += 1
 
-    def gerar_regras(self):
+    def aprioriRuleGenerator(self):
         all_buckets = self.baldes
-        #apriori
-        print("Apriori")
+   
+        print("Generating rules through Apriori")
         min_rep = self.min_rep
         min_conf = self.min_conf*100
+        # Get classification rules by pyFim. From the pyFim doc:
+        # [...] function arules for generating association rules 
+        # (simplified interface compared to apriori, eclat and fpgrowth, 
+        # which can also be used to generate association rules).
+        # maybe gonna have to change it.(?)
         borgelt_rules = arules(all_buckets,supp=-int(min_rep), conf=min_conf, report='abhC' , zmin=2)
 
         #print("Number of rules found: ", len(borgelt_rules))

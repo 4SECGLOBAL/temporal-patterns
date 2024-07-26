@@ -1,0 +1,9 @@
+flask
+pandas
+matplotlib
+scikit-learn
+tqdm
+wheel
+Cmake
+pycryptodome
+pyfim

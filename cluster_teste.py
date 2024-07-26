@@ -11,7 +11,7 @@ from fim import arules
 
 # fazer clusterizacao hierarquica
 # C:\...\datasets\Divisão [MConverter.eu].csv
-data = pd.read_csv('Repasses [MConverter.eu].csv')
+data = pd.read_csv('datasets\Repasses [MConverter.eu].csv')
 data_ordenada = data.copy()
 raw_data = data.copy()
 metadata = 'DataHora'
