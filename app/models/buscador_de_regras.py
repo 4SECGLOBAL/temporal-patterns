@@ -39,7 +39,7 @@ class ruleFinder:
         origem = self.origem
         destino = self.destino
         data = self.dataset
-        # print(data)
+        
         data[metadata] = pd.to_datetime(data[metadata], dayfirst=True)
         data['timestamp_seconds'] = (data[metadata] - data[metadata].min()).dt.total_seconds()
         # colocar em ordem crescente de timestamp

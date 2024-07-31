@@ -1,4 +1,4 @@
-class Controlador:
+class Haulm:
     def __init__(self, modelo):
         self.modelo = modelo
     

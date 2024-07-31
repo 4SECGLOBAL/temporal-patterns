@@ -1,13 +1,13 @@
 from app import app
 from flask import render_template, redirect, request, jsonify
 from .models.modelos import Modelo
-from .controlador import Controlador
+from .haulm import Haulm
 import pandas as pd
 import json
 import ast
 
 modelo = None
-controlador = None
+haulm = None
 dados_originais_html = ''
 regras_html = ''
 regras_destacadas_no_original_html = ''
@@ -36,7 +36,7 @@ def param_regras():
 #rota que salva os dados recebidos pelo usuario no menu
 @app.route('/param_dados_received', methods=['POST'])
 def get_infos():
-    global controlador
+    global haulm
     global dados_originais_html
     metadata = request.form['metadata']
     origem = request.form['origem']
@@ -50,15 +50,15 @@ def get_infos():
     if metadata not in data.columns or origem not in data.columns or destino not in data.columns:
         return render_template('param_dados.html', erro_msg='Erro ao carregar os dados. Verifique se o arquivo está no formato correto e se os campos foram preenchidos corretamente.')
    
-    controlador.set_dados_originais(data, metadata, origem, destino)
-    controlador.set_dados_modificados(data, metadata, origem, destino)
+    haulm.set_dados_originais(data, metadata, origem, destino)
+    haulm.set_dados_modificados(data, metadata, origem, destino)
     dados_originais_html = data.to_html(classes='table table-striped')
 
     return render_template('menu.html')
 
 @app.route('/param_regras_received', methods=['POST'])
 def get_infos_regras():
-    global controlador
+    global haulm
     min_rep = request.form['min_rep']
     min_conf = float(request.form['min_conf'])
     janela_tempo = request.form['janela_tempo']
@@ -67,7 +67,7 @@ def get_infos_regras():
         return render_template('param_regras.html', erro_msg='Erro ao carregar os dados. Verifique se os campos foram preenchidos corretamente.')
     
     print(min_rep, min_conf, janela_tempo)
-    controlador.set_regras_parametros(min_rep, min_conf, janela_tempo)
+    haulm.set_regras_parametros(min_rep, min_conf, janela_tempo)
 
     return render_template('menu.html')
 
@@ -78,9 +78,9 @@ def dados_originais():
 
 @app.route('/procurar_regras')
 def procurar_regras():
-    global controlador
+    global haulm
     global regras_html
-    regras_result = controlador.get_regras()
+    regras_result = haulm.get_regras()
 
     if len(regras_result) == 0:
         return render_template('regras_encontradas.html', erro_msg='Nenhuma regra encontrada. Tente novamente com outros parâmetros.')
@@ -100,8 +100,8 @@ def procurar_regras():
 
 @app.route('/itemsets_frequentes')
 def itemsets_frequentes():
-    global controlador
-    itemsets, itemsets_tree_view = controlador.get_itemsets()
+    global haulm
+    itemsets, itemsets_tree_view = haulm.get_itemsets()
     print('Itemsets tree view: ', itemsets_tree_view)
 
     if itemsets_tree_view:
@@ -114,13 +114,13 @@ def itemsets_frequentes():
 
 @app.route('/regras_destacadas_no_original')
 def regras_destacadas_no_original():
-    global controlador
+    global haulm
     global regras_destacadas_no_original_html
 
-    regras = controlador.get_regras()
-    dados_originais = controlador.get_dados_originais_ordenados()
-    antecedente = controlador.modelo.dados_originais.origem
-    consequente = controlador.modelo.dados_originais.destino
+    regras = haulm.get_regras()
+    dados_originais = haulm.get_dados_originais_ordenados()
+    antecedente = haulm.modelo.dados_originais.origem
+    consequente = haulm.modelo.dados_originais.destino
 
     if regras is None:
         return render_template('regras_destacadas_no_original.html', erro_msg='Nenhuma regra encontrada. Tente novamente com outros parâmetros.')
@@ -191,18 +191,18 @@ def regras_destacadas_no_original():
 
 @app.route('/destacar_regra', methods=['POST'])
 def destacar_regra():
-    global controlador
+    global haulm
     global regra_escolhida_destacada_html
     antecedentes_da_regra = request.form['antecedente']
     consequente_da_regra = request.form['consequente']
     antecedentes_da_regra = ast.literal_eval(antecedentes_da_regra)
     consequente_da_regra = ast.literal_eval(consequente_da_regra)
 
-    dados_originais = controlador.get_dados_originais_ordenados()
-    dados_com_cluster = controlador.get_dados_com_cluster()
+    dados_originais = haulm.get_dados_originais_ordenados()
+    dados_com_cluster = haulm.get_dados_com_cluster()
     print(dados_com_cluster)
-    antecedente = controlador.modelo.dados_originais.origem
-    consequente = controlador.modelo.dados_originais.destino
+    antecedente = haulm.modelo.dados_originais.origem
+    consequente = haulm.modelo.dados_originais.destino
 
     transacoes_suspeitas = []
     for elemento in antecedentes_da_regra:
@@ -273,12 +273,12 @@ def mostrar_regra_escolhida_destacada():
 
 def init():
     global modelo
-    global controlador
+    global haulm
     if modelo is None:
         modelo = Modelo()
-        if controlador is None:
-            controlador = Controlador(modelo)
-    elif controlador is None:
-        controlador = Controlador(modelo)
+        if haulm is None:
+            haulm = Haulm(modelo)
+    elif haulm is None:
+        haulm = Haulm(modelo)
 
     
