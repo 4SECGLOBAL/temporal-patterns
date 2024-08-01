@@ -38,26 +38,25 @@ class ruleFinder:
         metadata = self.metadata
         origem = self.origem
         destino = self.destino
-        data = self.dataset
+        dataset = self.dataset
         
-        data[metadata] = pd.to_datetime(data[metadata], dayfirst=True)
-        data['timestamp_seconds'] = (data[metadata] - data[metadata].min()).dt.total_seconds()
+        dataset[metadata] = pd.to_datetime(dataset[metadata], dayfirst=True)
+        dataset['timestamp_seconds'] = (dataset[metadata] - dataset[metadata].min()).dt.total_seconds()
         # colocar em ordem crescente de timestamp
-        data.sort_values(by=metadata, inplace=True)
-        data.reset_index(inplace=True, drop=True)
+        dataset.sort_values(by=metadata, inplace=True)
+        dataset.reset_index(inplace=True, drop=True)
 
 
         # contar o numero de vezes que cada item (coluna 0, coluna 1) aparece
-        contagem_ocorrencias = data.groupby([origem, destino]).size()
-        data['contagem_ocorrencias'] = data.apply(lambda row: contagem_ocorrencias[(row[origem], row[destino])], axis=1)
-
+        contagem_ocorrencias = dataset.groupby([origem, destino]).size()
+        dataset['contagem_ocorrencias'] = dataset.apply(lambda row: contagem_ocorrencias[(row[origem], row[destino])], axis=1)
         # #remove colunas com ocorrencias menores que 2
-        data = data.loc[data['contagem_ocorrencias'] >= 2]
-        data.reset_index(inplace=True, drop=True)
+        dataset = dataset.loc[dataset['contagem_ocorrencias'] >= 2]
+        dataset.reset_index(inplace=True, drop=True)
 
         # Selecionar características relevantes, neste caso, a coluna 'timestamp_seconds' e o numero de vezes que cada item aparece
-        # X = data[['timestamp_seconds', 'contagem_ocorrencias']].values
-        X = data[['timestamp_seconds']].values
+        # X = dataset[['timestamp_seconds', 'contagem_ocorrencias']].values
+        X = dataset[['timestamp_seconds']].values
 
         # Normalização dos dados
         scaler = StandardScaler()
@@ -69,8 +68,8 @@ class ruleFinder:
 
         # numero de baldes que seriam gerados caso fosse usado a janela de tempo
         num_baldes = 0
-        for i in range(0, len(data[metadata])-1):
-            if data[metadata][i+1] - data[metadata][i] > pd.Timedelta(days=float(janela['days']), hours=float(janela['hours']), minutes=float(janela['minutes'])):
+        for i in range(0, len(dataset[metadata])-1):
+            if dataset[metadata][i+1] - dataset[metadata][i] > pd.Timedelta(days=float(janela['days']), hours=float(janela['hours']), minutes=float(janela['minutes'])):
                 num_baldes += 1
 
         # calcular o numero de clusters ideal atraves da distancia entre os pontos e seus centroides
@@ -106,20 +105,20 @@ class ruleFinder:
         clusters = kmeans.labels_
 
         # #adicionar a coluna de clusters ao dataframe
-        data['Cluster'] = clusters # some improper data handling
+        dataset['Cluster'] = clusters # some improper dataset handling
         # #plot dos clusters em um grafico 2D onde y = 0
-        # plt.scatter(data[metadata], np.zeros(len(data[metadata])), c=clusters, cmap='viridis')
+        # plt.scatter(dataset[metadata], np.zeros(len(dataset[metadata])), c=clusters, cmap='viridis')
         # plt.xlabel('Timestamp')
         # plt.show()
-        self.dados_com_cluster = data
+        self.dados_com_cluster = dataset
 
 
 
-        data = data[[origem, destino, 'Cluster']]
-        #print(data)
+        dataset = dataset[[origem, destino, 'Cluster']]
+        #print(dataset)
 
         baldes = {}
-        for index, row in data.iterrows():
+        for index, row in dataset.iterrows():
             #print(list(row.values))
             if row['Cluster'] not in baldes:
                 baldes[row['Cluster']] = []
