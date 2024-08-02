@@ -50,20 +50,27 @@ class ruleFinder:
         # contar o numero de vezes que cada item (coluna 0, coluna 1) aparece
         contagem_ocorrencias = dataset.groupby([origem, destino]).size()
         dataset['contagem_ocorrencias'] = dataset.apply(lambda row: contagem_ocorrencias[(row[origem], row[destino])], axis=1)
-        # #remove colunas com ocorrencias menores que 2
+        # #remove linhas com ocorrencias menores que 2
         dataset = dataset.loc[dataset['contagem_ocorrencias'] >= 2]
         dataset.reset_index(inplace=True, drop=True)
 
         # Selecionar características relevantes, neste caso, a coluna 'timestamp_seconds' e o numero de vezes que cada item aparece
         # X = dataset[['timestamp_seconds', 'contagem_ocorrencias']].values
         X = dataset[['timestamp_seconds']].values
-
+     
         # Normalização dos dados
         scaler = StandardScaler()
         X_scaled = scaler.fit_transform(X)
 
-        # janela de tempo dada pelo usuario dependendo da natureza dos dados
+        # calcular a matriz de distancias
+        # se trata da norma L2, mas como temos um dado 1D,
+        # temos que a norma é equivalente ao valor absoluto de cada elemento 
+        # do único componente
+        Xi, Xj = np.meshgrid(X_scaled, X_scaled)
+        distancias = np.abs(Xi - Xj) 
 
+        # janela de tempo dada pelo usuario dependendo da natureza dos dados
+        ## DEVE SER ADICIONADO AO WEB GUI
         janela = {'days': 0, 'hours': 0, 'minutes': 30}
 
         # numero de baldes que seriam gerados caso fosse usado a janela de tempo
@@ -77,13 +84,6 @@ class ruleFinder:
         kmin = 2
         kmax = num_baldes + 10
         sil = []
-
-        # calcular a matriz de distancias
-        # se trata da norma L2, mas como temos um dado 1D,
-        # temos que a norma é equivalente ao valor absoluto de cada elemento 
-        # do único componente
-        Xi, Xj = np.meshgrid(X_scaled, X_scaled)
-        distancias = np.abs(Xi - Xj) 
 
         for k in tqdm(range(kmin, kmax+1), desc='Calculando melhor numero de clusters'):
             kmeans = KMeans(n_clusters=k, random_state=21).fit(X_scaled)

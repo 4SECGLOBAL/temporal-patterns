@@ -1,6 +1,6 @@
 from .dados_originais import originalData
 from .dados_modificados import modifiedData
-from .buscador_de_regras import ruleFinder
+from .rulesFinder import ruleFinder
 import time
 
 class Modelo:
