@@ -86,7 +86,7 @@ class ruleFinder:
         sil = []
 
         for k in tqdm(range(kmin, kmax+1), desc='Calculando melhor numero de clusters'):
-            kmeans = KMeans(n_clusters=k, random_state=21).fit(X_scaled)
+            kmeans = KMeans(n_clusters=k, random_state=21*int(np.ceil(kmax/10))).fit(X_scaled)
             labels = kmeans.labels_
             sil.append(silhouette_score(distancias, labels, metric='precomputed'))
 
@@ -119,7 +119,7 @@ class ruleFinder:
 
         baldes = {}
         for index, row in dataset.iterrows():
-            #print(list(row.values))
+            print(list(row.values))
             if row['Cluster'] not in baldes:
                 baldes[row['Cluster']] = []
             baldes[row['Cluster']].append((row[origem], row[destino]))
