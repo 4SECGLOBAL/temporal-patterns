@@ -7,9 +7,9 @@ from sklearn.preprocessing import StandardScaler
 from math import sqrt, floor
 from tqdm import tqdm
 from fim import arules
-
+import time
 class ruleFinder:
-    def __init__(self, janela_tempo, min_rep, min_conf):
+    def __init__(self, janela_tempo, min_repetition, min_confidence ):
         self.dataset = None
         self.metadata = None
         self.origem = None
@@ -17,8 +17,8 @@ class ruleFinder:
         self.dados_com_cluster = None
         self.baldes = []
         self.janela_tempo = janela_tempo
-        self.min_rep = min_rep
-        self.min_conf = min_conf
+        self.min_repetition = min_repetition
+        self.min_confidence  = min_confidence 
        
     def set_dataset(self, dataset):
         self.dataset = dataset
@@ -28,12 +28,14 @@ class ruleFinder:
         self.origem = origem
         self.destino = destino
     
-    def set_infos_regras(self, janela_tempo, min_rep, min_conf):
+    def set_infos_regras(self, janela_tempo, min_repetition, min_confidence ):
         self.janela_tempo = janela_tempo
-        self.min_rep = min_rep
-        self.min_conf = min_conf
+        self.min_repetition = min_repetition
+        self.min_confidence  = min_confidence 
 
     def kmeansBucketGenerator(self):
+        # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.values.html
+        # https://scikit-learn.org/stable/modules/preprocessing.html
         # https://towardsdatascience.com/advanced-k-means-controlling-groups-sizes-and-selecting-features-a998df7e6745
         metadata = self.metadata
         origem = self.origem
@@ -86,12 +88,12 @@ class ruleFinder:
         sil = []
 
         for k in tqdm(range(kmin, kmax+1), desc='Calculando melhor numero de clusters'):
-            kmeans = KMeans(n_clusters=k, random_state=21*int(np.ceil(kmax/10))).fit(X_scaled)
+            kmeans = KMeans(n_clusters=k, random_state=21).fit(X_scaled)
             labels = kmeans.labels_
             sil.append(silhouette_score(distancias, labels, metric='precomputed'))
 
         # pegar o cluster com o maior coeficiente de silhueta e plotar
-        best_cluster = sil.index(max(sil)) + kmin
+        best_cluster = sil.index(max(sil)) #+ kmin # try messing with this thing
         print(f'Melhor numero de clusters: {best_cluster}')
 
         # plt.plot(range(kmin, kmax+1), sil)
@@ -99,27 +101,26 @@ class ruleFinder:
         # plt.ylabel('Silhouette Score')
         # plt.show()
 
+        # https://stackoverflow.com/questions/28344660/how-to-identify-cluster-labels-in-kmeans-scikit-learn
         # mostrar os clusters de cada linha de acordo com o melhor cluster
         kmeans = KMeans(n_clusters=best_cluster)
         kmeans.fit(X_scaled)
-        clusters = kmeans.labels_
+        labels = kmeans.labels_
 
         # #adicionar a coluna de clusters ao dataframe
-        dataset['Cluster'] = clusters # some improper dataset handling
+        dataset['Cluster'] = labels # some improper dataset handling
         # #plot dos clusters em um grafico 2D onde y = 0
         # plt.scatter(dataset[metadata], np.zeros(len(dataset[metadata])), c=clusters, cmap='viridis')
         # plt.xlabel('Timestamp')
         # plt.show()
         self.dados_com_cluster = dataset
 
-
-
         dataset = dataset[[origem, destino, 'Cluster']]
-        #print(dataset)
 
+        # test this out later* https://stackoverflow.com/questions/77623855/how-to-match-labels-and-their-cluster-point-in-k-means-clusters
         baldes = {}
         for index, row in dataset.iterrows():
-            print(list(row.values))
+            #print(list(row.values))
             if row['Cluster'] not in baldes:
                 baldes[row['Cluster']] = []
             baldes[row['Cluster']].append((row[origem], row[destino]))
@@ -136,16 +137,16 @@ class ruleFinder:
 
     def aprioriRuleGenerator(self):
         all_buckets = self.baldes
-   
-        print("Generating rules through Apriori")
-        min_rep = self.min_rep
-        min_conf = self.min_conf*100
+
+        print("Generating association rules through Apriori")
+        min_repetition = self.min_repetition
+        min_confidence  = self.min_confidence *100
         # Get classification rules by pyFim. From the pyFim doc:
         # [...] function arules for generating association rules 
         # (simplified interface compared to apriori, eclat and fpgrowth, 
         # which can also be used to generate association rules).
         # maybe gonna have to change it.(?)
-        borgelt_rules = arules(all_buckets,supp=-int(min_rep), conf=min_conf, report='abhC' , zmin=2)
+        borgelt_rules = arules(all_buckets,supp=-int(min_repetition), conf=min_confidence , report='abhC' , zmin=2)
 
         #print("Number of rules found: ", len(borgelt_rules))
         #print(borgelt_rules)
@@ -157,7 +158,7 @@ class ruleFinder:
         #truncar conf para 2 casas decimais
         borgelt_rules_df['Conf'] = borgelt_rules_df['Conf'].apply(lambda x: round(x, 2))
 
-        borgelt_rules_df = borgelt_rules_df.loc[borgelt_rules_df['FR'] >= int(min_rep)]
+        borgelt_rules_df = borgelt_rules_df.loc[borgelt_rules_df['FR'] >= int(min_repetition)]
         borgelt_rules_df.reset_index(inplace=True, drop=True)
 
 

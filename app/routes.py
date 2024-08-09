@@ -59,15 +59,15 @@ def get_infos():
 @app.route('/param_regras_received', methods=['POST'])
 def get_infos_regras():
     global haulm
-    min_rep = request.form['min_rep']
-    min_conf = float(request.form['min_conf'])
+    min_repetition = request.form['min_rep']
+    min_confidence = float(request.form['min_conf'])
     janela_tempo = request.form['janela_tempo']
 
-    if min_rep == '' or min_conf == '' or janela_tempo == '':
+    if min_repetition == '' or min_confidence == '' or janela_tempo == '':
         return render_template('param_regras.html', erro_msg='Erro ao carregar os dados. Verifique se os campos foram preenchidos corretamente.')
     
-    print(min_rep, min_conf, janela_tempo)
-    haulm.set_regras_parametros(min_rep, min_conf, janela_tempo)
+    print(min_repetition, min_confidence, janela_tempo)
+    haulm.set_regras_parametros(min_repetition, min_confidence, janela_tempo)
 
     return render_template('menu.html')
 

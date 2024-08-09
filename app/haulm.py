@@ -8,8 +8,8 @@ class Haulm:
     def set_dados_modificados(self, dados, metadata, origem, destino):
         self.modelo.set_dados_modificados(dados, metadata, origem, destino)
 
-    def set_regras_parametros(self, min_rep, min_conf, janela_tempo):
-        self.modelo.set_regras_parametros(min_rep, min_conf, janela_tempo)
+    def set_regras_parametros(self, min_repetition, min_confidence , janela_tempo):
+        self.modelo.set_regras_parametros(min_repetition, min_confidence , janela_tempo)
 
     def get_regras(self):
         return self.modelo.buscar_regras()

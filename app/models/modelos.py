@@ -17,11 +17,11 @@ class Modelo:
         self.dados_modificados = modifiedData(data, metadata, origem, destino)
 
 
-    def set_regras_parametros(self, min_rep, min_conf, janela_tempo):
+    def set_regras_parametros(self, min_repetition, min_confidence , janela_tempo):
         if self.buscador_regras is None:
-            self.buscador_regras = ruleFinder(janela_tempo, min_rep, min_conf)
+            self.buscador_regras = ruleFinder(janela_tempo, min_repetition, min_confidence )
         else:
-            self.buscador_regras.set_infos_regras(janela_tempo, min_rep, min_conf)
+            self.buscador_regras.set_infos_regras(janela_tempo, min_repetition, min_confidence )
 
     def buscar_regras(self):
         self.buscador_regras.set_dataset(self.dados_modificados.getModifiedOrderedData())
@@ -35,7 +35,7 @@ class Modelo:
         numero_de_baldes = len(self.buscador_regras.baldes)
         print('Numero de baldes gerados: ', numero_de_baldes)
 
-        print('Gerando regras com os parametros: ', self.buscador_regras.janela_tempo, self.buscador_regras.min_rep, self.buscador_regras.min_conf)
+        print('Gerando regras com os parametros: ', self.buscador_regras.janela_tempo, self.buscador_regras.min_repetition, self.buscador_regras.min_confidence )
         self.regras = self.buscador_regras.aprioriRuleGenerator()
         return self.regras
     

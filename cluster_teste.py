@@ -55,7 +55,7 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 # janela de tempo dada pelo usuario dependendo da natureza dos dados
-janela = {'days': 0, 'hours': 0, 'minutes': 10}
+janela = {'days': 0, 'hours': 9, 'minutes': 50}
 
 # numero de baldes que seriam gerados caso fosse usado a janela de tempo
 num_baldes = 0
@@ -81,9 +81,12 @@ for k in tqdm(range(kmin, kmax+1), desc='Calculando melhor numero de clusters'):
     sil.append(silhouette_score(distancias, labels, metric='precomputed'))
 
 # pegar o cluster com o maior coeficiente de silhueta e plotar
-best_cluster = sil.index(max(sil)) + kmin
-print(f'Melhor numero de clusters: {best_cluster}')
-
+cluster_minus_1 = sil.index(max(sil)) - 1
+cluster_center  = sil.index(max(sil))
+cluster_plus_1  = sil.index(max(sil)) + 1
+print(f'Melhor numero de clusters: {cluster_minus_1}')
+print(f'Melhor numero de clusters: {cluster_center}')
+print(f'Melhor numero de clusters: {cluster_plus_1}')
 #plt.plot(range(kmin, kmax+1), sil)
 #plt.xlabel('Number of clusters')
 #plt.ylabel('Silhouette Score')
@@ -94,8 +97,9 @@ print(f'Melhor numero de clusters: {best_cluster}')
 # plt.colorbar()
 # plt.show()
 
+cluster_center = cluster_plus_1
 # mostrar os clusters de cada linha de acordo com o melhor cluster
-kmeans = KMeans(n_clusters=best_cluster)
+kmeans = KMeans(n_clusters=cluster_center)
 kmeans.fit(X_scaled)
 clusters = kmeans.labels_
 data['Cluster'] = clusters
@@ -104,7 +108,7 @@ data['Cluster'] = clusters
 plt.scatter(data[metadata], np.zeros(len(data[metadata])), c=clusters, cmap='viridis')
 plt.xlabel('Timestamp')
 plt.title("Janela: "+str(janela['days']) + "d " + str(janela['hours'])
-          + "h " + str(janela['minutes']) + "min   " + str(best_cluster) + " balde(s)")
+          + "h " + str(janela['minutes']) + "min   " + str(cluster_center) + " balde(s)")
 plt.show()
 
 
