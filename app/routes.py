@@ -180,7 +180,8 @@ def regras_destacadas_no_original():
         return html
     
     rows_to_highlight = find_rows_to_highlight(df_orig, df_sus)
-    print('Linhas a serem destacadas:\n')
+    print('{} linhas a serem destacadas:\n'.format(len(rows_to_highlight)))
+
     print(rows_to_highlight)
 
     regras_destacadas_no_original_html = gerar_tabela_html(df_orig, rows_to_highlight)
@@ -257,7 +258,8 @@ def destacar_regra():
         return html
     
     rows_to_highlight = find_rows_to_highlight(df_orig, df_sus)
-    print('Linhas a serem destacadas:\n')
+    print('Linhas a serem destacadas:')
+
     print(rows_to_highlight)
 
     regra_escolhida_destacada_html = gerar_tabela_html(df_orig, rows_to_highlight)

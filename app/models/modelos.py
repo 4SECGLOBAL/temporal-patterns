@@ -36,7 +36,7 @@ class Modelo:
         print('Numero de baldes gerados: ', numero_de_baldes)
 
         print('Gerando regras com os parametros: ', self.buscador_regras.janela_tempo, self.buscador_regras.min_repetition, self.buscador_regras.min_confidence )
-        self.regras = self.buscador_regras.aprioriRuleGenerator()
+        self.regras = self.buscador_regras.assoctiationRulesFinder()
         return self.regras
     
     def get_itemsets(self):

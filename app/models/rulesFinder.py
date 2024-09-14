@@ -6,8 +6,9 @@ from sklearn.metrics import silhouette_score, silhouette_samples
 from sklearn.preprocessing import StandardScaler
 from math import sqrt, floor
 from tqdm import tqdm
-from fim import arules
-import time
+import fim
+from time import time
+
 class ruleFinder:
     def __init__(self, janela_tempo, min_repetition, min_confidence ):
         self.dataset = None
@@ -73,7 +74,7 @@ class ruleFinder:
 
         # janela de tempo dada pelo usuario dependendo da natureza dos dados
         ## DEVE SER ADICIONADO AO WEB GUI
-        janela = {'days': 0, 'hours': 0, 'minutes': 30}
+        janela = {'days': 0, 'hours': 2, 'minutes': 00}
 
         # numero de baldes que seriam gerados caso fosse usado a janela de tempo
         num_baldes = 0
@@ -84,17 +85,18 @@ class ruleFinder:
         # calcular o numero de clusters ideal atraves da distancia entre os pontos e seus centroides
         # atribui o kmin e kmax de acordo com o numero de baldes que seriam gerados
         kmin = 2
-        kmax = num_baldes + 10
+        kmax = num_baldes
         sil = []
 
         for k in tqdm(range(kmin, kmax+1), desc='Calculando melhor numero de clusters'):
-            kmeans = KMeans(n_clusters=k, random_state=21).fit(X_scaled)
+            kmeans = KMeans(n_clusters=k, random_state=32).fit(X_scaled)
             labels = kmeans.labels_
             sil.append(silhouette_score(distancias, labels, metric='precomputed'))
 
         # pegar o cluster com o maior coeficiente de silhueta e plotar
-        best_cluster = sil.index(max(sil)) #+ kmin # try messing with this thing
+        best_cluster = sil.index(max(sil))
         print(f'Melhor numero de clusters: {best_cluster}')
+
 
         # plt.plot(range(kmin, kmax+1), sil)
         # plt.xlabel('Number of clusters')
@@ -116,7 +118,7 @@ class ruleFinder:
         self.dados_com_cluster = dataset
 
         dataset = dataset[[origem, destino, 'Cluster']]
-
+        dataset.to_csv('dataset.csv')
         # test this out later* https://stackoverflow.com/questions/77623855/how-to-match-labels-and-their-cluster-point-in-k-means-clusters
         baldes = {}
         for index, row in dataset.iterrows():
@@ -135,26 +137,54 @@ class ruleFinder:
         #     print(f"Balde {i} de tamanho {len(bucket)}: {bucket}", '\n')
         #     i += 1
 
-    def aprioriRuleGenerator(self):
+    def assoctiationRulesFinder(self):
+        # https://andrewm4894.com/2020/09/29/market-basket-analysis-in-python/
         all_buckets = self.baldes
 
         print("Generating association rules through Apriori")
         min_repetition = self.min_repetition
         min_confidence  = self.min_confidence *100
         # Get classification rules by pyFim. From the pyFim doc:
-        # [...] function arules for generating association rules 
-        # (simplified interface compared to apriori, eclat and fpgrowth, 
+        # [...] function arules for generating association rules
+        # (simplified interface compared to apriori, eclat and fpgrowth,
         # which can also be used to generate association rules).
-        # maybe gonna have to change it.(?)
-        borgelt_rules = arules(all_buckets,supp=-int(min_repetition), conf=min_confidence , report='abhC' , zmin=2)
-
-        #print("Number of rules found: ", len(borgelt_rules))
-        #print(borgelt_rules)
 
         columns_names = ['Consequente', 'Antecedente', 'FR', 'FA', 'FC', 'Conf']
         reordered_columns_names = ['Antecedente', 'Consequente', 'FR', 'FA', 'FC', 'Conf']
+
+        ti = time()
+        borgelt_rules = fim.arules(all_buckets, supp=-int(min_repetition), conf=min_confidence, report='abhC', zmin=2)
         borgelt_rules_df = pd.DataFrame(borgelt_rules, columns=columns_names)
         borgelt_rules_df = borgelt_rules_df[reordered_columns_names]
+        # borgelt_rules_df.to_csv('association_rulesDF/association_rules_arules.csv')
+        print(f"Elapsed time \t(Arules)\t: {time() - ti} s")
+
+        ti = time()
+        borgelt_rules_fpgrowth = fim.fpgrowth(all_buckets, supp=-int(min_repetition), conf=min_confidence,
+                                              report='abhC', zmin=2, target='r')
+        borgelt_rules_df_fpgrowth  = pd.DataFrame(borgelt_rules_fpgrowth, columns=columns_names)
+        borgelt_rules_df_fpgrowth = borgelt_rules_df_fpgrowth[reordered_columns_names]
+        # borgelt_rules_df_fpgrowth.to_csv('association_rulesDF/association_rules_fpgrowth.csv')
+        print(f"Elapsed time \t(fpgrowth)\t: {time() - ti} s")
+
+        ti = time()
+        borgelt_rules_apriori = fim.apriori(all_buckets, supp=-int(min_repetition), conf=min_confidence, report='abhC',
+                                            zmin=2, target='r')
+        borgelt_rules_df_apriori  = pd.DataFrame(borgelt_rules_apriori, columns=columns_names)
+        borgelt_rules_df_apriori = borgelt_rules_df_apriori[reordered_columns_names]
+        # borgelt_rules_df_apriori.to_csv('association_rulesDF/association_rules_apriori.csv')
+        print(f"Elapsed time \t(apriori)\t: {time() - ti} s")
+
+        ti = time()
+        borgelt_rules_eclat = fim.eclat(all_buckets, supp=-int(min_repetition), conf=min_confidence, report='abhC',
+                                        zmin=2, target='r')
+        borgelt_rules_df_eclat  = pd.DataFrame(borgelt_rules_eclat, columns=columns_names)
+        borgelt_rules_df_eclat = borgelt_rules_df_eclat[reordered_columns_names]
+        # borgelt_rules_df_eclat.to_csv('association_rulesDF/association_rules_eclat.csv')
+        print(f"Elapsed time \t(eclat)\t: {time() - ti} s")
+
+
+        t0 = time()
         #truncar conf para 2 casas decimais
         borgelt_rules_df['Conf'] = borgelt_rules_df['Conf'].apply(lambda x: round(x, 2))
 
@@ -190,6 +220,7 @@ class ruleFinder:
         # Remover as linhas com os índices identificados
         rules_found_df = borgelt_rules_df.drop(indices_remover)
         rules_found_df.reset_index(inplace=True, drop=True)
+        print(f"Elapsed time \t(rest of code)\t: {time() - ti} s")
 
         # Resultado final
         #print(rules_found_df)
