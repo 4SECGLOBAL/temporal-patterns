@@ -68,7 +68,7 @@ class ruleFinder:
         # calcular a matriz de distancias
         # se trata da norma L2, mas como temos um dado 1D,
         # temos que a norma é equivalente ao valor absoluto de cada elemento 
-        # do único componente
+        # da única componente
         Xi, Xj = np.meshgrid(X_scaled, X_scaled)
         distancias = np.abs(Xi - Xj) 
 
@@ -105,7 +105,8 @@ class ruleFinder:
 
         # https://stackoverflow.com/questions/28344660/how-to-identify-cluster-labels-in-kmeans-scikit-learn
         # mostrar os clusters de cada linha de acordo com o melhor cluster
-        kmeans = KMeans(n_clusters=best_cluster)
+        # como a primeira posicao do vetor esta associado a kmin, basta:
+        kmeans = KMeans(n_clusters=best_cluster+kmin)
         kmeans.fit(X_scaled)
         labels = kmeans.labels_
 
