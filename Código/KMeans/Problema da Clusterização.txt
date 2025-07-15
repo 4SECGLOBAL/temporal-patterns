@@ -1,0 +1,15 @@
+[10:35 AM, 22/05/2025] Jhony Patrício: dado um data set qualquer com paddrão escondido, existe um ou mais k que no kmeans capazes de criar de um agrupamento correto para encontrar todos os padrões escondidos.
+[10:36 AM, 22/05/2025] Jhony Patrício: coeficiente de silhoueta: curva sobe até atingir um pico -> o melhor k é o pico --> ao kmeans
+[10:37 AM, 22/05/2025] Jhony Patrício: mais da metade não funcionou o pico do coeficiente para encontrar os padrões, mesmo com a suavização da curva -> mais de 50% não funcionou
+[10:38 AM, 22/05/2025] Jhony Patrício: máximos locais entre picos
+[10:38 AM, 22/05/2025] Jhony Patrício: esse k não gerava corretamente os agrupamentos para encontrar todas as regras
+[10:41 AM, 22/05/2025] Jhony Patrício: pela teoria do coef de silhueta, até 260 não daria certo, mas pelos gráficos dá pra ver todos os Ks que funcionaram , a partir do 60 já foram encontrados os padrões
+[10:42 AM, 22/05/2025] Jhony Patrício: quando parar?
+[10:45 AM, 22/05/2025] Jhony Patrício: cada padrão numa cestinha diferente
+[10:45 AM, 22/05/2025] Jhony Patrício: qual o critério de parada para dados desconhecidos?
+[10:46 AM, 22/05/2025] Jhony Patrício: cenário amplo conhecido -> centenas de arquivos com padrão conhecido, e entendemos padrões de comportamento
+[10:48 AM, 22/05/2025] Jhony Patrício: não pode chutar. testes exaustivos para descobrir padrões de comportamentos
+[10:51 AM, 22/05/2025] Jhony Patrício: comparar os padrões inseridos entre diferentes Ks para ver qual padrões se repetem e determinar quais Ks e quais padrões
+
+
+fazer um programa kmeans -> apriori; com muitos testes para criar hipóteses sobre os Ks
