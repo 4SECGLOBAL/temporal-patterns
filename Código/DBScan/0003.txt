@@ -1,0 +1,12 @@
+Padrões aleatórios gerados:
+
+1. 4464 => 8481 - 3 repetições
+2. 8920 => 1337 - 3 repetições
+3. 1874 => 2918 - 3 repetições
+4. 6044 => 8206 - 3 repetições
+5. 4901 => 3370 - 3 repetições
+6. 8166 => 947 - 3 repetições
+7. 2052 => 1468 - 3 repetições
+8. 5178 => 4282 - 3 repetições
+9. 3879 => 4721 - 3 repetições
+10. 6115 => 9949 - 3 repetições

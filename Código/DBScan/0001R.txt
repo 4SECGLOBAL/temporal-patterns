@@ -1,0 +1,5 @@
+Padrões aleatórios gerados:
+
+1. 4610 => 798 - 5 repetições
+2. 6401 => 9658 - 5 repetições
+3. 904 => 325 - 5 repetições

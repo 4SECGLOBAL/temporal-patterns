@@ -1,0 +1,4 @@
+Regras de Associação Encontradas:
+
+{'destino_7331'} -> {'origem_5166'} (Confiança: 1.00, Suporte: 0.0060)
+{'origem_5166'} -> {'destino_7331'} (Confiança: 1.00, Suporte: 0.0060)

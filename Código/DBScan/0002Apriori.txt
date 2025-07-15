@@ -1,0 +1,12 @@
+Regras de Associação Encontradas:
+
+{'destino_110'} -> {'origem_5539'} (Confiança: 1.00, Suporte: 0.0015)
+{'origem_1170'} -> {'destino_1615'} (Confiança: 1.00, Suporte: 0.0015)
+{'destino_1615'} -> {'origem_1170'} (Confiança: 1.00, Suporte: 0.0015)
+{'destino_1816'} -> {'origem_2904'} (Confiança: 1.00, Suporte: 0.0015)
+{'origem_2904'} -> {'destino_1816'} (Confiança: 1.00, Suporte: 0.0015)
+{'destino_4321'} -> {'origem_1355'} (Confiança: 1.00, Suporte: 0.0015)
+{'origem_1355'} -> {'destino_4321'} (Confiança: 1.00, Suporte: 0.0015)
+{'destino_9996'} -> {'origem_6186'} (Confiança: 1.00, Suporte: 0.0015)
+{'origem_6186'} -> {'destino_9996'} (Confiança: 1.00, Suporte: 0.0015)
+{'origem_5539'} -> {'destino_110'} (Confiança: 0.75, Suporte: 0.0015)
