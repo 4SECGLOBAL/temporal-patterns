@@ -1,6 +1,0 @@
-Padrões aleatórios gerados:
-
-1. 8913 => 9618 - 4 repetições
-2. 3689 => 1461 - 4 repetições
-3. 3777 => 2138 - 4 repetições
-4. 1029 => 9822 - 4 repetições

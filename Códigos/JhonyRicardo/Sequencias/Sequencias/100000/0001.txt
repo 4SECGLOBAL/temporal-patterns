@@ -1,7 +1,0 @@
-Padrões aleatórios gerados:
-
-1. 3489 => 3348 - 25 repetições
-2. 4916 => 1898 - 25 repetições
-3. 3018 => 3331 - 25 repetições
-4. 9963 => 9444 - 25 repetições
-5. 2585 => 6402 - 25 repetições
