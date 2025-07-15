@@ -1,0 +1,3 @@
+Padrões aleatórios gerados:
+
+1. 5166 => 7331 - 3 repetições

@@ -1,0 +1,8 @@
+Regras de Associação Encontradas:
+
+{'origem_904'} -> {'destino_325'} (Confiança: 1.00, Suporte: 0.0049)
+{'destino_325'} -> {'origem_904'} (Confiança: 1.00, Suporte: 0.0049)
+{'destino_798'} -> {'origem_4610'} (Confiança: 1.00, Suporte: 0.0049)
+{'origem_4610'} -> {'destino_798'} (Confiança: 1.00, Suporte: 0.0049)
+{'origem_6401'} -> {'destino_9658'} (Confiança: 1.00, Suporte: 0.0049)
+{'destino_9658'} -> {'origem_6401'} (Confiança: 1.00, Suporte: 0.0049)
