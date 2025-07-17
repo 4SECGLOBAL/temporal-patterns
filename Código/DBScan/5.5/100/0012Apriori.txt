@@ -1,0 +1,18 @@
+Regras de Associação Encontradas:
+
+{'destino_252'} -> {'origem_4286'} (Confiança: 1.00, Suporte: 0.0181)
+{'origem_4286'} -> {'destino_252'} (Confiança: 1.00, Suporte: 0.0181)
+{'destino_3048'} -> {'origem_2406'} (Confiança: 1.00, Suporte: 0.0108)
+{'origem_2406'} -> {'destino_3048'} (Confiança: 1.00, Suporte: 0.0108)
+{'destino_3198'} -> {'origem_4561'} (Confiança: 1.00, Suporte: 0.0108)
+{'origem_1083'} -> {'destino_3260'} (Confiança: 1.00, Suporte: 0.0181)
+{'destino_3260'} -> {'origem_1083'} (Confiança: 1.00, Suporte: 0.0181)
+{'destino_5005'} -> {'origem_3860'} (Confiança: 1.00, Suporte: 0.0181)
+{'origem_3860'} -> {'destino_5005'} (Confiança: 1.00, Suporte: 0.0181)
+{'origem_1009'} -> {'destino_7477'} (Confiança: 1.00, Suporte: 0.0181)
+{'destino_7477'} -> {'origem_1009'} (Confiança: 1.00, Suporte: 0.0181)
+{'origem_1852'} -> {'destino_8383'} (Confiança: 1.00, Suporte: 0.0108)
+{'destino_8383'} -> {'origem_1852'} (Confiança: 1.00, Suporte: 0.0108)
+{'destino_8838'} -> {'origem_117'} (Confiança: 1.00, Suporte: 0.0181)
+{'origem_117'} -> {'destino_8838'} (Confiança: 1.00, Suporte: 0.0181)
+{'origem_4561'} -> {'destino_3198'} (Confiança: 0.75, Suporte: 0.0108)

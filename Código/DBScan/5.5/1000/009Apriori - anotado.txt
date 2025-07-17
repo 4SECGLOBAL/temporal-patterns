@@ -1,0 +1,22 @@
+Regras de Associação Encontradas:
+
+{'origem_6098'} -> {'destino_3765'} (Confiança: 1.00, Suporte: 0.0180) -- OK
+{'destino_3765'} -> {'origem_6098'} (Confiança: 1.00, Suporte: 0.0180) -- OK
+{'destino_8441'} -> {'origem_4869'} (Confiança: 1.00, Suporte: 0.0180) -- OK
+{'origem_4869'} -> {'destino_8441'} (Confiança: 1.00, Suporte: 0.0180) -- OK
+{'origem_6414'} -> {'destino_8455'} (Confiança: 1.00, Suporte: 0.0180) -- OK
+{'destino_8455'} -> {'origem_6414'} (Confiança: 1.00, Suporte: 0.0180) -- OK
+{'origem_5015'} -> {'destino_9193'} (Confiança: 1.00, Suporte: 0.0180) -- OK
+{'origem_7716'} -> {'destino_9539'} (Confiança: 1.00, Suporte: 0.0180) -- OK
+{'destino_9539'} -> {'origem_7716'} (Confiança: 1.00, Suporte: 0.0180) -- OK
+{'destino_9193'} -> {'origem_5015'} (Confiança: 0.75, Suporte: 0.0180) -- OK
+
+1.1 OK OK
+1.2 NOK NOK
+1.3 NOK NOK
+2.1 OK OK
+2.2 OK OK
+2.3 OK OK
+3.1 OK OK
+3.2 NOK NOK
+3.3 NOK NOK

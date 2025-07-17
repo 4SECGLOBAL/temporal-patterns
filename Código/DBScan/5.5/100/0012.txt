@@ -1,0 +1,8 @@
+Padrões aleatórios gerados:
+
+1. 1852 => 8383
+    1511 => 4945 - 3 repetições
+2. 2406 => 3048
+    9693 => 8500 - 3 repetições
+3. 4561 => 3198
+    7210 => 1158 - 3 repetições
