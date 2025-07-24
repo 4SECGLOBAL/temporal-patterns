@@ -1,0 +1,28 @@
+
+Padrões em sequência (eps = 300 segundos):
+
+Sequência 7:
+  {'origem_1732'} -> {'destino_6455'}
+  Confiança: 0.375, Suporte: 0.000054
+  {'origem_981'} -> {'destino_3627'}
+  Confiança: 0.300, Suporte: 0.000054
+
+Repetições completas: 3
+
+Horários:
+
+{'origem_981'} -> {'destino_3627'}
+    - 2024-08-11 03:28:54
+{'origem_1732'} -> {'destino_6455'}
+    - 2024-08-11 03:30:54
+
+{'origem_981'} -> {'destino_3627'}
+    - 2025-01-26 00:59:34
+{'origem_1732'} -> {'destino_6455'}
+    - 2025-01-26 01:01:34
+
+{'origem_981'} -> {'destino_3627'}
+    - 2025-03-12 04:59:11
+{'origem_1732'} -> {'destino_6455'}
+    - 2025-03-12 05:00:11
+

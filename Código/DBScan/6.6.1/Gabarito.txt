@@ -1,0 +1,57 @@
+Padrões aleatórios gerados:
+
+1. 7517 => 8700
+    2228 => 5889
+    4936 => 5347 - 6 repetições
+2. 2760 => 4637
+    6317 => 9149
+    5806 => 7419 - 6 repetições
+3. 3818 => 9889
+    7338 => 2954
+    4086 => 9260 - 6 repetições
+30 minutos (max entre eles)
+
+4. 9939 => 6659
+    9660 => 1899
+    1385 => 8737
+    2183 => 1748 - 5 repetições
+30 minutos (max entre eles)
+
+5. 981 => 3627
+    1732 => 6455
+    3845 => 1951
+    8908 => 8060
+    405 => 7600
+    8740 => 1295 - 3 repetições
+5 minutos (max entre eles)
+
+6. 7772 => 1031
+    3821 => 3948
+    7197 => 5312 - 5 repetições
+15 minutos (max entre eles)
+
+
+10800/10k -> falta:
+3. 3818 => 9889 (Sequência 2)
+4. 9939 => 6659 
+   9660 => 1899 (Sequência 5)
+5. 405 => 7600
+   8908 => 8060 (Sequência 6)
+10800/20k -> encontrou
+
+18000/20k -> falta
+1. Inteiro (Sequência 1)
+2. Inteiro (Sequência 4)
+3. Inteiro (Sequência 5)
+18000/20k -> encontrou
+5. Completo (Sequência 2)
+4. Completo (Sequência 3)
+6. Completo (Sequência 6)
+
+10800/20k -> encontrou
+1. Inteiro
+2. Inteiro
+3. Inteiro
+4. Inteiro
+5. Inteiro
+6. Inteiro

@@ -1,0 +1,5 @@
+Padrões aleatórios gerados:
+
+1. 7772 => 1031
+    3821 => 3948
+    7197 => 5312 - 5 repetições

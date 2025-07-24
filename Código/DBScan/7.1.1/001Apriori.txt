@@ -1,0 +1,50 @@
+
+Padrões em sequência (eps = 3600 segundos):
+
+Sequência 1:
+  {'origem_CMGX'} -> {'destino_VZFA'}
+  Confiança: 1.000, Suporte: 0.000053
+  {'origem_MENT'} -> {'destino_TKHX'}
+  Confiança: 1.000, Suporte: 0.000053
+  {'origem_KRLJ'} -> {'destino_KGJF'}
+  Confiança: 0.833, Suporte: 0.000053
+
+Repetições completas: 5
+
+Horários:
+
+{'origem_KRLJ'} -> {'destino_KGJF'}
+    - 2024-10-11 00:46:27
+{'origem_CMGX'} -> {'destino_VZFA'}
+    - 2024-10-11 00:56:27
+{'origem_MENT'} -> {'destino_TKHX'}
+    - 2024-10-11 00:59:27
+
+{'origem_KRLJ'} -> {'destino_KGJF'}
+    - 2024-10-31 19:39:26
+{'origem_CMGX'} -> {'destino_VZFA'}
+    - 2024-10-31 19:51:26
+{'origem_MENT'} -> {'destino_TKHX'}
+    - 2024-10-31 20:00:26
+
+{'origem_KRLJ'} -> {'destino_KGJF'}
+    - 2024-11-07 15:08:10
+{'origem_CMGX'} -> {'destino_VZFA'}
+    - 2024-11-07 15:18:10
+{'origem_MENT'} -> {'destino_TKHX'}
+    - 2024-11-07 15:19:10
+
+{'origem_KRLJ'} -> {'destino_KGJF'}
+    - 2024-11-11 06:23:25
+{'origem_CMGX'} -> {'destino_VZFA'}
+    - 2024-11-11 06:26:25
+{'origem_MENT'} -> {'destino_TKHX'}
+    - 2024-11-11 06:40:25
+
+{'origem_KRLJ'} -> {'destino_KGJF'}
+    - 2025-04-30 05:20:04
+{'origem_CMGX'} -> {'destino_VZFA'}
+    - 2025-04-30 05:23:04
+{'origem_MENT'} -> {'destino_TKHX'}
+    - 2025-04-30 05:29:04
+
